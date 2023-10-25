@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch} from "react-router-dom";
 import theme from "./theme";
 import WeatherPage from "./pages/weather.tsx";
 import {Fragment, Suspense} from "react";
+import NavBar from "./components/NavBar.tsx";
 
 function App() {
     return (
@@ -10,13 +11,16 @@ function App() {
             <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={theme}>
                     <CssBaseline />
-                    <Suspense fallback={<Fragment />}>
-                        <Switch>
-                            <Route path="/">
-                                <WeatherPage />
-                            </Route>
-                        </Switch>
-                    </Suspense>
+                    <main>
+                        <NavBar />
+                        <Suspense fallback={<Fragment />}>
+                            <Switch>
+                                <Route path="/">
+                                    <WeatherPage />
+                                </Route>
+                            </Switch>
+                        </Suspense>
+                    </main>
                 </ThemeProvider>
             </StyledEngineProvider>
         </BrowserRouter>
