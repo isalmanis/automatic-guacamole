@@ -1,16 +1,19 @@
 import {AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Typography} from "@mui/material";
 import * as React from "react";
 import {MenuOutlined} from "@mui/icons-material";
+import {useNavigate} from "react-router";
 
 const pages = ['weather'];
 
 export default function NavBar() {
+    const navigate = useNavigate();
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
-    const handleCloseNavMenu = () => {
+    const goToPage = (page: string) => {
+        navigate(page);
         setAnchorElNav(null);
     };
 
@@ -60,13 +63,13 @@ export default function NavBar() {
                                 horizontal: 'left',
                             }}
                             open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
+                            onClose={goToPage}
                             sx={{
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                <MenuItem key={page} onClick={() => goToPage(page)}>
                                     <Typography textAlign="center">{page}</Typography>
                                 </MenuItem>
                             ))}
@@ -94,7 +97,7 @@ export default function NavBar() {
                         {pages.map((page) => (
                             <Button
                                 key={page}
-                                onClick={handleCloseNavMenu}
+                                onClick={() => goToPage(page)}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 {page}
