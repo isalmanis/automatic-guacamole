@@ -1,0 +1,6 @@
+/Guacamole.Server/bin/
+/Guacamole.Server/obj/
+.vs
+.idea
+.github
+.git
