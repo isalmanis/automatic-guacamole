@@ -2,6 +2,7 @@ using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Identity;
 using Guacamole.Server;
 using Microsoft.AspNetCore;
+using Serilog;
 
 public class Program
 {
@@ -23,6 +24,11 @@ public class Program
                         });
                 config = config.AddJsonFile("local.settings.json", true, true);
                 config.Build();
+            })
+            .ConfigureLogging((hostingContext, logging) =>
+            {
+                logging.AddFile("logs/{Date}.log");
+                logging.AddConsole();
             })
             .UseStartup<Startup>();
 }
