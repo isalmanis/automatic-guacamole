@@ -1,0 +1,6 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "DbConnectionString": "Server=(localdb)\\mssqllocaldb;Database=Blogging;Trusted_Connection=True;"
+  } 
+}

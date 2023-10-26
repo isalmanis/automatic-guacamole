@@ -1,22 +1,28 @@
-var builder = WebApplication.CreateBuilder(args);
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Identity;
+using Guacamole.Server;
+using Microsoft.AspNetCore;
 
-// Add services to the container.
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        CreateWebHostBuilder(args).Build().Run();
+    }
 
-builder.Services.AddControllers();
-
-var app = builder.Build();
-
-app.UseDefaultFiles();
-app.UseStaticFiles();
-
-// Configure the HTTP request pipeline.
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.MapFallbackToFile("/index.html");
-
-app.Run();
+    public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+        WebHost.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration((builder, config) =>
+            {
+                if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("KeyVaultUri")))
+                    config = config.AddAzureKeyVault(new Uri(Environment.GetEnvironmentVariable("KeyVaultUri") 
+                                                             ?? throw new ArgumentNullException()),
+                        new DefaultAzureCredential(), new AzureKeyVaultConfigurationOptions
+                        {
+                            ReloadInterval = TimeSpan.FromMinutes(20)
+                        });
+                config = config.AddJsonFile("local.settings.json", true, true);
+                config.Build();
+            })
+            .UseStartup<Startup>();
+}
